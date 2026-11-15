@@ -1,0 +1,17 @@
+# Decision Log
+
+This file records concise migration outcomes. Full rationale/options are in the top-level `ARCHITECTURE_DECISION_RECORDS.md`.
+
+| Date | Decision | Previous behavior | New behavior | Compatibility/evidence |
+|---|---|---|---|---|
+| 2026-11-10 | Restore full source archive into empty workspace | Workspace had only an empty `.git` directory and no source | Restored 75 non-Git files from `isl-engine.zip`; excluded nested `.git` | Original ZIP unchanged; archive commit `13f2ed6`; no current commit exists |
+| 2026-11-10 | Treat legacy isolated model as candidate only | README/SRS phrases implied tested model/tests | Require weights, label map, preprocessing, data split and recorded metrics before promotion | No model/data/report artifacts present; no test execution in static audit |
+| 2026-11-10 | Use task-separated architecture | Existing app has isolated pipeline and 501 translation stub | Keep isolated and continuous data/model/API/evaluation contracts separate | Matches supplied spec; continuous pipeline remains unimplemented |
+| 2026-11-10 | Reject CTC as direct English sentence loss without alignments | Supplied architecture DOCX proposes Transformer plus CTC | Direct seq2seq for sentence references; CTC only for aligned gloss task | Dataset references do not establish gloss-token/frame alignment |
+| 2026-11-10 | Defer RAG/agent/cloud stack | Supplied architecture proposes retrieval/agents, Postgres/Redis, AWS/Vercel | Modular monolith, SQLite/local storage and task adapters first | No knowledge source, load, account or deployment evidence supports added services |
+| 2026-11-10 | Defer data acquisition until rights and count reconciliation | Earlier notebook downloads archives and deletes unmatched files | Register source/version/terms, verify checksums and groups before accepting data | Current workspace has no raw data; iSign is gated and ISLTranslate terms need confirmation |
+| 2026-11-10 | Require explicit task-aware dataset provenance | Legacy manifests lack uniform rights, parent-video, checksum and split-group enforcement | Add canonical manifest, source adapters, fingerprinting, validation, duplicate candidates and preprocessing lineage | Synthetic metadata tests pass; no actual media was used |
+| 2026-11-10 | Keep model outputs unready until task artifact exists | Legacy UI/backend can imply predictions although artifacts are absent | Per-task readiness; `/api/v1` returns stable `MODEL_NOT_READY`; continuous translation is a separate model | Full mock/contract suite passes; local model registry has no artifacts |
+| 2026-11-10 | Fit confidence calibration only on validation data | Softmax score was exposed without calibration provenance | Validation-only scalar temperature and precision-target abstention; hash-bind calibration to ONNX and labels | Calibration tests pass; no approved real evaluation split exists |
+| 2026-11-10 | Bound upload, decode and request resources | Legacy API accepted uploads without actual media validation or retention limits | Stream to private temp file, enforce size/duration/frame/concurrency bounds, decode video, remove temporary media | Full API fixture suite passes; real-media behavior remains to verify |
+| 2026-11-10 | Keep CV experiment dependencies optional but available in CI | Grouped CV utility imported scikit-learn even when the default runtime did not | Add the `experiments` optional extra and install it for test/CI runs | `uv lock --check` and 44-test suite pass |

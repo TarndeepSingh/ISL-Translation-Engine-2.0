@@ -1,0 +1,10 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "name": "Web app (uvicorn)", "type": "debugpy", "request": "launch", "module": "uvicorn",
+      "args": ["backend.main:app", "--reload"], "justMyCode": true },
+    { "name": "Live demo (OpenCV window)", "type": "debugpy", "request": "launch", "module": "isl.live" },
+    { "name": "Train", "type": "debugpy", "request": "launch", "module": "isl.train",
+      "args": ["--index", "cache/index.csv", "--out", "runs/exp1"] }
+  ]
+}

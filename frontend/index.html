@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ISL Translator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Indian Sign Language → Text</h1>
+    <div class="stage">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+      <span id="pill" class="pill">starting…</span>
+    </div>
+    <div id="caption" class="caption">Sign in front of the camera</div>
+    <div class="row">
+      <span id="last">last: —</span>
+      <label>Confidence ≥ <b id="cv">0.70</b>
+        <input id="conf" type="range" min="0.4" max="0.95" step="0.05" value="0.7"></label>
+      <button id="clear">Clear</button>
+    </div>
+    <p class="hint">Only hand/body keypoints leave your browser — never video. Camera needs HTTPS or localhost.</p>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

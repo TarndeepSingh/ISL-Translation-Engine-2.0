@@ -1,0 +1,66 @@
+# ==============================================================================
+# ISL Translation Engine 2.0 — Production .gitignore
+# ==============================================================================
+
+# 1. Python virtual environments & caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.uv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# 2. Environment variables & secrets (NEVER COMMIT)
+.env
+.env.*
+!.env.example
+
+# 3. Frontend dependencies & local build artifacts
+node_modules/
+web/node_modules/
+web/dist/
+.npm/
+
+# 4. Heavy datasets, raw videos, caches & training runs (NEVER COMMIT)
+data/
+!data/.gitkeep
+!data/manifests/README.md
+runs/
+checkpoints/
+outputs/
+logs/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.zip
+*.tar.gz
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.keras
+
+# 5. Model artifacts: Ignore random files in models/, BUT EXPLICITLY ALLOW
+#    the 3 production ONNX deployment artifacts!
+models/*
+!models/.gitkeep
+!models/isl.onnx
+!models/isl.labels.json
+!models/isl.calibration.json
+
+# 6. OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp

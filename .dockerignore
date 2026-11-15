@@ -1,0 +1,17 @@
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+web/node_modules
+web/dist
+data
+cache
+runs
+reports
+test_videos/*/samples
+models/*.onnx
+models/*.pt
+models/*.pth
+models/*.task
