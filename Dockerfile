@@ -40,8 +40,6 @@ RUN useradd -m -u 1000 -s /bin/bash appuser
 
 WORKDIR /app
 
-COPY requirements.txt ./requirements.txt
-COPY backend/requirements.txt ./backend_requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
     fastapi>=0.110.0 \
@@ -56,13 +54,12 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pillow>=10.2.0 \
     httpx>=0.27.0
 
-COPY configs/ ./configs/
+# Copy runtime production packages and exported models only
 COPY isl/ ./isl/
-COPY ml/ ./ml/
 COPY backend/ ./backend/
-COPY frontend/ ./frontend/
 COPY models/ ./models/
 
+# Copy the compiled React production bundle from Stage 1
 COPY --from=frontend-builder /build/web/dist ./web/dist
 
 RUN python -c "import mediapipe as mp; print('MediaPipe version verified:', mp.__version__)" && \
