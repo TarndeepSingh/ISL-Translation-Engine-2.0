@@ -59,6 +59,71 @@ export interface HealthResponse {
   error: string | null;
 }
 
+export interface EvalPerClass {
+  id: number;
+  raw: string;
+  word: string;
+  support: number;
+  correct: number;
+  accuracy: number | null;
+  ci_low: number;
+  ci_high: number;
+  most_confused_with: { word: string; id: number; count: number } | null;
+  seed_accuracy: Record<string, number | null>;
+  seed_mean: number | null;
+  seed_std: number;
+}
+
+export interface EvalConfusion {
+  true: string;
+  pred: string;
+  true_id: number;
+  pred_id: number;
+  count: number;
+  rate: number;
+}
+
+export interface EvalSeed {
+  seed: number;
+  n_test: number;
+  overall_accuracy: number;
+  average_class_accuracy: number;
+  reported_top1: number | null;
+  reported_top3: number | null;
+  same_test_videos: boolean;
+}
+
+export interface EvaluationReport {
+  schema_version: string;
+  generated_at: string;
+  split: string;
+  policy: string;
+  variant: string;
+  deployed: {
+    run: string;
+    seed: number;
+    n_test: number;
+    n_classes: number;
+    correct: number;
+    overall_accuracy: number;
+    average_class_accuracy: number;
+    reported_top1: number | null;
+    reported_top3: number | null;
+    min_videos_per_class: number;
+    max_videos_per_class: number;
+  };
+  labels: Array<{ id: number; raw: string; word: string }>;
+  per_class: EvalPerClass[];
+  confusion_matrix: number[][];
+  top_confusions: EvalConfusion[];
+  seeds: EvalSeed[];
+  seed_summary: { n_seeds: number; overall_mean: number; overall_std: number; average_mean: number; average_std: number };
+  warnings: string[];
+  notes: string[];
+  /** true = report matches the loaded ONNX model, false = it does not, null = model not loaded so unknown */
+  labels_match_deployed_model: boolean | null;
+}
+
 export interface FrameLandmarkSnapshot {
   pose: number[][] | null; // 33 x [x, y, z] or null when not detected
   hands: number[][][];     // 0..2 detected hands, each 21 x [x, y, z]
@@ -112,6 +177,16 @@ export async function predictVideoFile(file: File): Promise<PredictionResponse> 
   if (!res.ok) {
     const errBody = await res.json().catch(() => ({}));
     throw new Error(errBody.detail || `Video upload prediction failed (${res.status})`);
+  }
+  return res.json();
+}
+
+/** Returns null when the backend has no evaluation report yet (HTTP 404). */
+export async function fetchEvaluation(): Promise<EvaluationReport | null> {
+  const res = await fetch(`${API_BASE}/api/v1/evaluation`);
+  if (res.status === 404) return null;
+  if (!res.ok) {
+    throw new Error(`Failed to load evaluation report (${res.status})`);
   }
   return res.json();
 }

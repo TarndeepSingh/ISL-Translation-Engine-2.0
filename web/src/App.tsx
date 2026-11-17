@@ -10,6 +10,7 @@ import {
   predictVideoFile,
   type VocabularyItem,
 } from "./api";
+import EvaluationSection from "./EvaluationSection";
 import "./styles.css";
 
 interface SignInstruction {
@@ -1423,6 +1424,8 @@ export default function App() {
               </p>
             </div>
           </div>
+
+          <EvaluationSection />
         </section>
 
         <section id="stack" className="section">

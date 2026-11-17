@@ -59,6 +59,7 @@ models/*
 !models/isl.onnx
 !models/isl.labels.json
 !models/isl.calibration.json
+!models/isl.eval.json
 
 # 6. OS & Editor files
 .DS_Store

@@ -1,0 +1,11 @@
+# Render Blueprint: builds ./Dockerfile (React build + FastAPI + ONNX Runtime) and runs it as one web service.
+services:
+  - type: web
+    name: isl-translation-engine
+    runtime: docker
+    plan: free            # 512 MB RAM / 0.1 CPU, sleeps after 15 min idle. Use "starter" for a smoother demo.
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PORT
+        value: "10000"

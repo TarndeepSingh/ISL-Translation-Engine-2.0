@@ -34,6 +34,7 @@ MODEL_DIR = Path(os.environ.get("ISL_MODEL_DIR", str(PROJECT_ROOT / "models")))
 ONNX_PATH = MODEL_DIR / "isl.onnx"
 LABELS_PATH = MODEL_DIR / "isl.labels.json"
 CALIB_PATH = MODEL_DIR / "isl.calibration.json"
+EVAL_PATH = MODEL_DIR / "isl.eval.json"  # written by: python -m ml.evaluation.class_report
 WEB_DIST_DIR = PROJECT_ROOT / "web" / "dist"
 LEGACY_FRONTEND_DIR = PROJECT_ROOT / "frontend"
 
@@ -386,6 +387,33 @@ def get_model_metadata() -> Dict[str, Any]:
         "vocabulary_count": len(clean_vocab),
         "vocabulary": clean_vocab,
     }
+
+
+@app.get("/api/v1/evaluation")
+def get_evaluation() -> Dict[str, Any]:
+    """Held-out test results: per-class accuracy, overall/average accuracy, confusion matrix.
+
+    Served from models/isl.eval.json (created offline by ml.evaluation.class_report). Nothing is computed
+    here, so the endpoint is cheap and the numbers cannot drift from what was actually evaluated.
+    """
+    if not EVAL_PATH.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="No evaluation report yet. Run `python -m ml.evaluation.class_report` and copy the "
+                   f"result to {EVAL_PATH}.",
+        )
+    try:
+        report = json.loads(EVAL_PATH.read_text(encoding="utf-8"))
+    except Exception as exc:
+        logger.error("Could not read %s: %s", EVAL_PATH, exc)
+        raise HTTPException(status_code=500, detail="Evaluation report is unreadable.")
+
+    # Guard against showing numbers that belong to a different model: the class list in the report
+    # must be exactly the class list the loaded ONNX model uses (same names, same order).
+    _ = predictor.is_ready
+    report_labels = [item.get("raw") for item in report.get("labels", [])]
+    report["labels_match_deployed_model"] = (report_labels == predictor.labels) if predictor.labels else None
+    return report
 
 
 @app.post("/api/v1/predict-frames")

@@ -1,0 +1,58 @@
+/* Evaluation section. Uses the site's theme variables so light and dark mode both work. */
+.ev-wrap { margin-top: 1.5rem; display: grid; gap: 1.1rem; }
+.ev-wrap code { font-family: var(--font-mono); font-size: 0.85em; }
+.ev-note { padding: 1rem 1.2rem; border: 1px dashed var(--border-subtle); border-radius: 12px; color: var(--text-secondary); }
+.ev-bad { color: var(--accent-rose); }
+
+.ev-banner { padding: 0.7rem 1rem; border-radius: 10px; font-size: 0.88rem; border: 1px solid var(--border-subtle); }
+.ev-banner.ev-bad { border-color: var(--accent-rose); background: color-mix(in srgb, var(--accent-rose) 10%, transparent); }
+.ev-banner.ev-warn { border-color: var(--accent-amber); background: color-mix(in srgb, var(--accent-amber) 10%, transparent); color: var(--text-primary); }
+
+.ev-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; }
+.ev-stat { display: grid; gap: 0.25rem; }
+.ev-stat span { font-size: 0.78rem; color: var(--text-secondary); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.03em; }
+.ev-stat b { font-size: 2rem; line-height: 1.1; color: var(--text-primary); }
+.ev-stat small { color: var(--text-muted); font-size: 0.8rem; }
+
+.ev-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; }
+.ev-head h4 { font-size: 1.05rem; margin: 0; }
+.ev-sub { color: var(--text-secondary); font-size: 0.86rem; margin: 0.4rem 0 0.9rem; }
+.ev-seg { display: inline-flex; border: 1px solid var(--border-subtle); border-radius: 999px; overflow: hidden; }
+.ev-seg button { background: transparent; border: 0; padding: 0.3rem 0.8rem; font-size: 0.8rem; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.ev-seg button.on { background: var(--accent-indigo); color: #fff; }
+
+/* per-class bars */
+.ev-bars { max-height: 680px; overflow-y: auto; padding-right: 0.4rem; }
+.ev-row { display: grid; grid-template-columns: minmax(96px, 150px) 1fr 92px; gap: 0.6rem; align-items: center; padding: 0.18rem 0; font-size: 0.84rem; }
+.ev-name { text-align: right; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ev-track { position: relative; height: 14px; background: var(--bg-secondary); border-radius: 7px; overflow: hidden; }
+.ev-fill { position: absolute; inset: 0 auto 0 0; border-radius: 7px; }
+.ev-fill.ok { background: var(--accent-emerald); }
+.ev-fill.mid { background: var(--accent-amber); }
+.ev-fill.low { background: var(--accent-rose); }
+.ev-ci { position: absolute; top: 6px; height: 2px; background: var(--text-primary); opacity: 0.55; }
+.ev-val { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-primary); display: flex; justify-content: space-between; }
+.ev-val em { font-style: normal; color: var(--text-muted); }
+.ev-legend { display: flex; gap: 1.1rem; margin-top: 0.8rem; font-size: 0.78rem; color: var(--text-secondary); }
+.ev-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 0.35rem; }
+.ev-legend i.ok { background: var(--accent-emerald); }
+.ev-legend i.mid { background: var(--accent-amber); }
+.ev-legend i.low { background: var(--accent-rose); }
+
+/* confusion matrix */
+.ev-scroll { overflow-x: auto; }
+.ev-matrix { width: 100%; min-width: 680px; height: auto; display: block; }
+.ev-grid-bg { fill: var(--bg-secondary); }
+.ev-axis { font-size: 8px; fill: var(--text-secondary); font-family: var(--font-sans); }
+.ev-axis-title { font-size: 10px; fill: var(--text-muted); font-family: var(--font-mono); }
+.ev-cell-ok { fill: var(--accent-indigo); }
+.ev-cell-err { fill: var(--accent-rose); }
+.ev-hover { fill: none; stroke: var(--text-primary); stroke-width: 1.2; }
+.ev-hover-text { min-height: 1.4em; margin: 0.6rem 0 0; font-size: 0.86rem; color: var(--text-secondary); }
+
+.ev-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+.ev-two h4 { font-size: 1.05rem; margin: 0 0 0.7rem; }
+
+@media (max-width: 640px) {
+  .ev-row { grid-template-columns: 92px 1fr 78px; }
+}
